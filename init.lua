@@ -195,12 +195,18 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --custom key bindings
 vim.keymap.set('n', '<leader>rv', '<cmd>split<CR>|<cmd>terminal npm run dev<CR>', { desc = '[R]un [v]ite Project in horizontal split' })
 vim.keymap.set('n', '<leader>rV', '<cmd>tabnew<CR>|<cmd>terminal npm run dev<CR>', { desc = '[R]un [V]ite Project in a new tab' })
+
+--npm commands
+vim.keymap.set('n', '<leader>ns', '<cmd>tabnew<CR>|<cmd>terminal npm run start<CR>', { desc = '[n]pm run [s]tart' })
+vim.keymap.set('n', '<leader>nb', '<cmd>tabnew<CR>|<cmd>terminal npm run build<CR>', { desc = '[n]pm run [b]uild' })
+vim.keymap.set('n', '<leader>ni', '<cmd>tabnew<CR>|<cmd>terminal npm install<CR>', { desc = '[n]pm [i]nstall' })
+
 vim.keymap.set('n', '<C-Tab>', 'gt', { desc = 'Go To Next Tab' })
 vim.keymap.set('n', '<C-S-Tab>', 'gT', { desc = 'Go To Next Tab' })
-vim.keymap.set('n', '<leader>h', '<cmd>1tabnext<CR>', { desc = 'Go To First Tab' })
-vim.keymap.set('n', '<leader>j', '<cmd>2tabnext<CR>', { desc = 'Go To Second Tab' })
-vim.keymap.set('n', '<leader>k', '<cmd>3tabnext<CR>', { desc = 'Go To Third Tab' })
-vim.keymap.set('n', '<leader>l', '<cmd>4tabnext<CR>', { desc = 'Go To Fourth Tab' })
+vim.keymap.set('n', '<M-1>', '<cmd>1tabnext<CR>', { desc = 'Go To First Tab' })
+vim.keymap.set('n', '<M-2>', '<cmd>2tabnext<CR>', { desc = 'Go To Second Tab' })
+vim.keymap.set('n', '<M-3>', '<cmd>3tabnext<CR>', { desc = 'Go To Third Tab' })
+vim.keymap.set('n', '<M-4>', '<cmd>4tabnext<CR>', { desc = 'Go To Fourth Tab' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
@@ -256,7 +262,29 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'theprimeagen/harpoon',
+    config = function()
+      local mark = require 'harpoon.mark'
+      local ui = require 'harpoon.ui'
 
+      vim.keymap.set('n', '<leader>a', mark.add_file)
+      vim.keymap.set('n', '<C-e>', ui.toggle_quick_menu)
+
+      vim.keymap.set('n', '<leader>h', function()
+        ui.nav_file(1)
+      end)
+      vim.keymap.set('n', '<leader>j', function()
+        ui.nav_file(2)
+      end)
+      vim.keymap.set('n', '<leader>k', function()
+        ui.nav_file(3)
+      end)
+      vim.keymap.set('n', '<leader>l', function()
+        ui.nav_file(4)
+      end)
+    end,
+  },
   'mbbill/undotree',
   {
     'windwp/nvim-autopairs',
